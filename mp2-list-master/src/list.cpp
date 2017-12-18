@@ -59,25 +59,23 @@ List::List(const List & list2)
 
 List & List::operator=(const List & list2)
 {
-	Clean();
-	if (list2.head != NULL)
+	if(this != &list2)
 	{
-		head = new Node(list2.head->data, list2.head);
-		Node*tmp = head;
-		Node*tmp2 = list2.head->next;
-		while (tmp2 != NULL)
+		Clean();
+		if (list2.head != NULL)
 		{
-			tmp->next = new Node(tmp2->data, tmp2->next);
-			tmp = tmp->next;
-			tmp2 = tmp2->next;
+			head = new Node(list2.head->data, list2.head);
+			Node*tmp = head;
+			Node*tmp2 = list2.head->next;
+			while (tmp2 != NULL)
+			{
+				tmp->next = new Node(tmp2->data, tmp2->next);
+				tmp = tmp->next;
+				tmp2 = tmp2->next;
+			}
 		}
-		return*this;
 	}
-	else
-	{
-		head = list2.head;
-		return*this;
-	}
+	return*this;
 }
 
 List::~List()
@@ -295,14 +293,8 @@ List List::Merge(Node * node, const List & list2)
 }
 List List::Merge(const List & list2)
 {
-	List list;
-	Node* tmp = head;
-	while (tmp != NULL)
-	{
-		list.InsertToTail(tmp->data);
-		tmp = tmp->next;
-	}
-	tmp = list2.head;
+	List list(*this);
+	Node* tmp = list2.head;
 	while (tmp != NULL)
 	{
 		list.InsertToTail(tmp->data);
